@@ -5,6 +5,7 @@ import mysql.connector
 import sys
 
 print(sys.version)
+print('just test')
 
 
 class ZhaobiaoSpider(scrapy.Spider):
