@@ -10,7 +10,7 @@ class ZhaobiaoSpider(scrapy.Spider):
 
     def start_requests(self):
         url = 'http://www.bidchance.com/' \
-              'freesearch.do?&filetype=&channel=gonggao&currentpage=441' \
+              'freesearch.do?&filetype=&channel=gonggao&currentpage=1' \
               '&searchtype=sj&queryword=&displayStyle=title&pstate=&' \
               'field=all&leftday=&province=&bidfile=&project=&' \
               'heshi=&recommend=&field=all&jing=&starttime=&endtime=&' \
@@ -36,15 +36,20 @@ class ZhaobiaoSpider(scrapy.Spider):
             line += 1
             sql = "insert into spider.`%s`(title,url,location,channel,pubdate) values" \
                   "('%s','%s','%s','%s','%s')" % (tablename, title, url, location, channel, pubdate)
-            cursor.execute(sql)
+            try:
+                cursor.execute(sql)
+            except :
+                mlog = open("vill.log", "a")
+                dt = datetime.datetime.now().strftime('%Y-%m-%d-%H-%M-%S')
+                mlog.write('[%s]_%s\n')
             conn.commit()
         next_page = response.xpath(
-                '//div[@class = "fy l"]/div[@class= "fynr"]/div[@id = "nextpage2"]/a/@href').extract_first()
+            '//div[@class = "fy l"]/div[@class= "fynr"]/div[@id = "nextpage2"]/a/@href').extract_first()
         if next_page is not None:
             mlog = open("vill.log", "a")
             dt = datetime.datetime.now().strftime('%Y-%m-%d-%H-%M-%S')
             mlog.write('[%s]_%s\n' % (str(dt), str(next_page)))
-            s = random.randint(0, 15)
+            s = random.randint(10, 20)
             print(s)
             time.sleep(s)
             next_page = response.urljoin(next_page)
