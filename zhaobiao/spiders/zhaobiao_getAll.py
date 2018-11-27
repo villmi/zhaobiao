@@ -2,6 +2,7 @@ import scrapy
 import mysql.connector
 import time
 import random
+import datetime
 
 
 class ZhaobiaoSpider(scrapy.Spider):
@@ -9,20 +10,19 @@ class ZhaobiaoSpider(scrapy.Spider):
 
     def start_requests(self):
         url = 'http://www.bidchance.com/' \
-              'freesearch.do?&filetype=&channel=gonggao&currentpage=1' \
+              'freesearch.do?&filetype=&channel=gonggao&currentpage=441' \
               '&searchtype=sj&queryword=&displayStyle=title&pstate=&' \
               'field=all&leftday=&province=&bidfile=&project=&' \
               'heshi=&recommend=&field=all&jing=&starttime=&endtime=&' \
               'attachment='
-        print(url)
-        return scrapy.Request(url=url, callback=self.parse)
+        yield scrapy.Request(url=url, callback=self.parse)
 
     def parse(self, response):
         conn = mysql.connector.connect(host='localhost', port='3306', user='vill', password='hao5jx', database='spider')
         cursor = conn.cursor()
         spans = response.xpath('//tr[@class = "datatr"]')
         line = 0
-        tablename = None
+        tablename = 'zhaobiao_getall'
         for span in spans:
             title = span.xpath('//tr[@class = "datatr"]/td/a')
             title = title.xpath('string(.)').extract()[line]
@@ -41,6 +41,9 @@ class ZhaobiaoSpider(scrapy.Spider):
         next_page = response.xpath(
                 '//div[@class = "fy l"]/div[@class= "fynr"]/div[@id = "nextpage2"]/a/@href').extract_first()
         if next_page is not None:
+            mlog = open("vill.log", "a")
+            dt = datetime.datetime.now().strftime('%Y-%m-%d-%H-%M-%S')
+            mlog.write('[%s]_%s\n' % (str(dt), str(next_page)))
             s = random.randint(0, 15)
             print(s)
             time.sleep(s)
