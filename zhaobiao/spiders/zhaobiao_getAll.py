@@ -79,7 +79,7 @@ class ZhaobiaoSpider(scrapy.Spider):
     name = "zhaobiao_getAll"
 
     def start_requests(self):
-        province_index = 0
+        province_index = 20
         url = 'http://www.bidchance.com/' \
               'freesearch.do?&filetype=&channel=gonggao&currentpage=1' \
               '&searchtype=sj&queryword=&displayStyle=title&pstate=&' \
