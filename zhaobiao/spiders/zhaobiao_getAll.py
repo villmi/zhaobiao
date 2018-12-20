@@ -91,7 +91,7 @@ class ZhaobiaoSpider(scrapy.Spider):
                                    'currentPage': 1})
 
     def parse(self, response):
-        conn = mysql.connector.connect(host='localhost', port='3306', user='vill', password='hao5jx', database='spider')
+        conn = mysql.connector.connect(host='localhost', port='3306', user='vill', password='mimabaomi', database='spider')
         cursor = conn.cursor()
         spans = response.xpath('//tr[@class = "datatr"]')
         line = 0

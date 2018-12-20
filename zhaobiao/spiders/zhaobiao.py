@@ -13,7 +13,7 @@ class ZhaobiaoSpider(scrapy.Spider):
     number = 0
 
     def start_requests(self):
-        conn = mysql.connector.connect(host='localhost', port='3306', user='vill', password='hao5jx', database='spider')
+        conn = mysql.connector.connect(host='localhost', port='3306', user='vill', password='mimabaomi', database='spider')
         url = 'http://www.bidchance.com/search.do'
         tag = getattr(self, 'keyword', None)
         ss = str(tag).split(",")
